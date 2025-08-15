@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramón Valdez - El Café de Todo un País</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #8B4513;
+            --primary-dark: #5D2F0A;
+            --gold: #D4AF37;
+            --gold-light: #F4E68C;
+            --cream: #FFF8DC;
+            --dark: #1A0F0A;
+            --text-light: #6B7280;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Cursor personalizado */
+        body {
+            cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="%23D4AF37" opacity="0.8"/></svg>'), auto;
+        }
+
+        /* Partículas de fondo */
+        .particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: particleFloat 15s infinite linear;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-10px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Confeti */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .confetti-container.active {
+            opacity: 1;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confettiFall 3s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Header Premium */
+        .header {
+            background: linear-gradient(135deg, 
+                rgba(139, 69, 19, 0.95), 
+                rgba(93, 47, 10, 0.98)
+            );
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header.scrolled {
+            background: rgba(26, 15, 10, 0.98);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transform: translateY(0);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: logoGlow 2s ease-in-out infinite alternate;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+            animation: coffeeRotate 4s linear infinite;
+        }
+
+        @keyframes logoGlow {
+            0% { text-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+            100% { text-shadow: 0 0 20px rgba(212, 175, 55, 0.6); }
+        }
+
+        @keyframes coffeeRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+
+        .nav-menu a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--gold), var(--gold-light));
+            border-radius: 25px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .nav-menu a:hover {
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+
+        .nav-menu a:hover::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Hero Premium */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(
+                135deg,
+                rgba(139, 69, 19, 0.9),
+                rgba(93, 47, 10, 0.8),
+                rgba(212, 175, 55, 0.1)
+            );
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="coffee1" cx="50%" cy="50%"><stop offset="0%" style="stop-color:%238B4513;stop-opacity:0.1"/><stop offset="100%" style="stop-color:%235D2F0A;stop-opacity:0.3"/></radialGradient></defs><circle cx="200" cy="300" r="150" fill="url(%23coffee1)"/><circle cx="800" cy="700" r="200" fill="url(%23coffee1)"/><circle cx="600" cy="200" r="100" fill="url(%23coffee1)"/></svg>');
+            background-size: cover;
+            animation: heroBackgroundMove 20s ease-in-out infinite;
+        }
+
+        @keyframes heroBackgroundMove {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            max-width: 900px;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, white, var(--gold-light), white);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 300% 300%;
+            animation: gradientShift 3s ease-in-out infinite alternate, textGlow 2s ease-in-out infinite alternate;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        @keyframes textGlow {
+            0% { filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)); }
+            100% { filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.6)); }
+        }
+
+        .hero .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            margin-bottom: 2rem;
+            color: var(--gold-light);
+            font-style: italic;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            line-height: 1.8;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.9s both;
+        }
+
+        .btn {
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.4s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--gold), var(--gold-light));
+            color: var(--dark);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid var(--gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gold);
+            color: var(--dark);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Elementos flotantes mejorados */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .floating-coffee {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.15;
+            animation: complexFloat 8s ease-in-out infinite;
+            filter: blur(1px);
+        }
+
+        .floating-coffee:nth-child(1) { animation-delay: 0s; }
+        .floating-coffee:nth-child(2) { animation-delay: 2s; }
+        .floating-coffee:nth-child(3) { animation-delay: 4s; }
+        .floating-coffee:nth-child(4) { animation-delay: 6s; }
+
+        @keyframes complexFloat {
+            0%, 100% { 
+                transform: translateY(0px) translateX(0px) rotate(0deg) scale(1); 
+                opacity: 0.15; 
+            }
+            25% { 
+                transform: translateY(-30px) translateX(15px) rotate(90deg) scale(1.1); 
+                opacity: 0.25; 
+            }
+            50% { 
+                transform: translateY(-20px) translateX(-10px) rotate(180deg) scale(0.9); 
+                opacity: 0.3; 
+            }
+            75% { 
+                transform: translateY(-40px) translateX(5px) rotate(270deg) scale(1.05); 
+                opacity: 0.2; 
+            }
+        }
+
+        /* Secciones premium */
+        .section {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, transparent, var(--gold-light), transparent);
+            opacity: 0;
+            animation: titleGlow 3s ease-in-out infinite;
+            z-index: -1;
+            border-radius: 20px;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { opacity: 0; transform: scale(0.95); }
+            50% { opacity: 0.1; transform: scale(1.05); }
+        }
+
+        .section-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* About Section Premium */
+        .about {
+            background: linear-gradient(135deg, var(--cream), #FFF);
+            position: relative;
+        }
+
+        .about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="%23D4AF37" opacity="0.1"/><circle cx="80" cy="60" r="1.5" fill="%238B4513" opacity="0.1"/><circle cx="40" cy="80" r="1" fill="%23D4AF37" opacity="0.1"/></svg>');
+            background-size: 100px 100px;
+            animation: patternMove 20s linear infinite;
+        }
+
+        @keyframes patternMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .about-text {
+            animation: slideInLeft 1s ease;
+        }
+
+        .about-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: #4A5568;
+            line-height: 1.8;
+        }
+
+        .about-image {
+            position: relative;
+            animation: slideInRight 1s ease;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: linear-gradient(45deg, var(--gold), var(--gold-light));
+            border-radius: 30px;
+            opacity: 0.1;
+            animation: imageGlow 4s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes imageGlow {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.1; }
+            50% { transform: scale(1.05) rotate(2deg); opacity: 0.2; }
+        }
+
+        .about-image-inner {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 25px;
+            padding: 3rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image-inner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .about-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Products Section Premium */
+        .products {
+            background: linear-gradient(135deg, var(--dark), var(--primary-dark));
+            color: white;
+            position: relative;
+        }
+
+        .products::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 2.5rem;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            opacity: 0;
+            transition: all 0.6s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px) rotateX(5deg);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            border-color: var(--gold);
+        }
+
+        .product-card:hover::before {
+            opacity: 1;
+        }
+
+        .product-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            animation: productIconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes productIconFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .product-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--gold);
+        }
+
+        .product-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--gold-light);
+            margin: 1.5rem 0;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Recipes Section Premium */
+        .recipes {
+            background: linear-gradient(135deg, #FFF, var(--cream));
+            position: relative;
+        }
+
+        .recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .recipe-image {
+            height: 300px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recipe-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: recipeShine 4s linear infinite;
+        }
+
+        @keyframes recipeShine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .recipe-content {
+            padding: 2.5rem;
+        }
+
+        .recipe-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .recipe-ingredients {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .recipe-ingredients li {
+            padding: 0.8rem 0;
+            color: #4A5568;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .recipe-ingredients li:hover {
+            color: var(--primary);
+            transform: translateX(10px);
+        }
+
+        .recipe-ingredients li::before {
+            content: '☕';
+            color: var(--gold);
+            font-size: 1.2rem;
+            animation: ingredientBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes ingredientBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        /* Contact Section Premium */
+        .contact {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            position: relative;
+        }
+
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .contact-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--gold);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+        }
+
+        .contact-item i {
+            font-size: 1.5rem;
+            color: var(--gold);
+            width: 25px;
+            margin-top: 0.2rem;
+            animation: contactIconPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes contactIconPulse {
+            0%, 100% { transform: scale(1); color: var(--gold); }
+            50% { transform: scale(1.1); color: var(--gold-light); }
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
+            border-radius: 25px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Footer Premium */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            font-size: 1.5rem;
+        }
+
+        .social-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--gold), var(--gold-light));
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-10px) scale(1.1);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .social-links a:hover::before {
+            opacity: 1;
+        }
+
+        .footer-text {
+            text-align: center;
+            opacity: 0.7;
+            font-size: 1rem;
+        }
+
+        /* Animaciones de entrada */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(26, 15, 10, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 3rem 2rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                border-top: 1px solid rgba(212, 175, 55, 0.2);
+            }
+
+            .nav-menu.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .mobile-toggle {
+                display: block;
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .mobile-toggle:hover {
+                color: var(--gold);
+            }
+
+            .hero h1 {
+                font-size: clamp(2.5rem, 10vw, 4rem);
+            }
+
+            .hero .subtitle {
+                font-size: clamp(1rem, 4vw, 1.5rem);
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .about-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .products-grid,
+            .recipes-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .section {
+                padding: 5rem 0;
+            }
+
+            .section-title {
+                font-size: clamp(2rem, 8vw, 3rem);
+            }
+        }
+
+        /* Efectos especiales de carga */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+            color: white;
+        }
+
+        .loader-icon {
+            font-size: 4rem;
+            color: var(--gold);
+            margin-bottom: 2rem;
+            animation: loaderSpin 2s linear infinite;
+        }
+
+        @keyframes loaderSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .loader-progress {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            animation: loaderProgress 3s ease-in-out;
+        }
+
+        @keyframes loaderProgress {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+
+        /* Efectos de scroll */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(212, 175, 55, 0.2);
+            z-index: 1001;
+        }
+
+        .scroll-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        .mobile-toggle {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-icon">
+                <i class="fas fa-coffee"></i>
+            </div>
+            <div class="loader-text">Ramón Valdez</div>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+        <div class="scroll-progress" id="scrollProgress"></div>
+    </div>
+
+    <!-- Particles Background -->
+    <div class="particles-bg" id="particlesBg"></div>
+
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <i class="fas fa-coffee"></i>
+                Ramón Valdez
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#inicio" data-section="inicio">Inicio</a></li>
+                <li><a href="#nosotros" data-section="nosotros">Nosotros</a></li>
+                <li><a href="#productos" data-section="productos">Productos</a></li>
+                <li><a href="#recetas" data-section="recetas">Recetas</a></li>
+                <li><a href="#contacto" data-section="contacto">Contacto</a></li>
+            </ul>
+            <div class="mobile-toggle" id="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero section" id="inicio">
+        <div class="hero-bg"></div>
+        <div class="floating-elements">
+            <div class="floating-coffee" style="top: 20%; left: 10%;">☕</div>
+            <div class="floating-coffee" style="top: 60%; right: 15%;">🫘</div>
+            <div class="floating-coffee" style="top: 40%; left: 70%;">☕</div>
+            <div class="floating-coffee" style="top: 80%; left: 20%;">🍯</div>
+        </div>
+        <div class="hero-content">
+            <h1>Ramón Valdez</h1>
+            <p class="subtitle">El Café de Todo un País</p>
+            <p>Con dedicación seleccionamos a mano los mejores granos de café, según su tamaño, color y peso; para crear el café premium Ramón Valdez 100% colombiano, de orgullo y reconocimiento mundial.</p>
+            <div class="cta-buttons">
+                <a href="#productos" class="btn btn-primary" onclick="triggerConfetti()">
+                    <i class="fas fa-coffee"></i>
+                    Ver Productos
+                </a>
+                <a href="#nosotros" class="btn btn-secondary">
+                    <i class="fas fa-heart"></i>
+                    Nuestra Historia
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about section" id="nosotros">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <h2 class="section-title">Nuestra Historia</h2>
+                <p class="section-subtitle">Una tradición familiar que ha perdurado por generaciones, llevando el mejor café colombiano a cada hogar del país.</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text slide-in-left">
+                    <h3>RAMÓN VALDEZ, EL CAFÉ DE TODO UN PAÍS</h3>
+                    <p>Con más de 50 años de experiencia en la industria cafetera, la familia Valdez ha dedicado su vida a perfeccionar el arte del café. Desde las montañas cafeteras de Colombia, seleccionamos cuidadosamente cada grano para ofrecerte una experiencia única en cada taza.</p>
+                    <p>Nuestro compromiso con la calidad nos ha llevado a desarrollar procesos artesanales que respetan tanto la tradición como la innovación, garantizando un café de excelencia mundial que representa el orgullo de nuestro país.</p>
+                    <p>Cada grano cuenta una historia, cada taza es un viaje por las montañas colombianas donde el café se cultiva con amor y dedicación ancestral.</p>
+                    <a href="#productos" class="btn btn-primary">
+                        <i class="fas fa-eye"></i>
+                        Descubre Nuestra Selección
+                    </a>
+                </div>
+                <div class="about-image slide-in-right">
+                    <div class="about-image-inner">
+                        <div class="about-icon">☕</div>
+                        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 1rem;">Tradición y Calidad</h4>
+                        <p>Desde 1970, cultivando los mejores granos con técnicas tradicionales y tecnología moderna.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products section" id="productos">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <h2 class="section-title" style="color: white;">Nuestros Productos</h2>
+                <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">Descubre nuestra selección premium de cafés, cada uno con su personalidad única y sabor inconfundible.</p>
+            </div>
+            <div class="products-grid">
+                <div class="product-card fade-in-up" onclick="triggerConfetti()">
+                    <div class="product-icon">☕</div>
+                    <h3>Café Tradicional</h3>
+                    <p>Nuestro clásico café molido, perfecto para comenzar el día con energía y sabor auténtico colombiano.</p>
+                    <div class="product-price">$12.000</div>
+                    <a href="#" class="btn btn-primary">Comprar Ahora</a>
+                </div>
+                <div class="product-card fade-in-up" onclick="triggerConfetti()">
+                    <div class="product-icon">🫘</div>
+                    <h3>Café Premium</h3>
+                    <p>Granos selectos de las mejores fincas cafeteras, tostado artesanal para paladares exigentes.</p>
+                    <div class="product-price">$18.000</div>
+                    <a href="#" class="btn btn-primary">Comprar Ahora</a>
+                </div>
+                <div class="product-card fade-in-up" onclick="triggerConfetti()">
+                    <div class="product-icon">✨</div>
+                    <h3>Café Gourmet</h3>
+                    <p>La más fina selección de granos especiales, proceso único que resalta notas frutales y chocolatadas.</p>
+                    <div class="product-price">$25.000</div>
+                    <a href="#" class="btn btn-primary">Comprar Ahora</a>
+                </div>
+                <div class="product-card fade-in-up" onclick="triggerConfetti()">
+                    <div class="product-icon">❄️</div>
+                    <h3>Café Frío</h3>
+                    <p>Perfecta mezcla para preparaciones frías, ideal para días calurosos sin perder intensidad.</p>
+                    <div class="product-price">$15.000</div>
+                    <a href="#" class="btn btn-primary">Comprar Ahora</a>
+                </div>
+                <div class="product-card fade-in-up" onclick="triggerConfetti()">
+                    <div class="product-icon">🍯</div>
+                    <h3>Café Soluble</h3>
+                    <p>Practicidad sin sacrificar sabor, perfecto para llevarlo contigo a cualquier lugar del mundo.</p>
+                    <div class="product-price">$10.000</div>
+                    <a href="#" class="btn btn-primary">Comprar Ahora</a>
+                </div>
+                <div class="product-card fade-in-up" onclick="triggerConfetti()">
+                    <div class="product-icon">🎁</div>
+                    <h3>Pack Regalo</h3>
+                    <p>Combinación perfecta de nuestros mejores productos en una presentación especial y elegante.</p>
+                    <div class="product-price">$45.000</div>
+                    <a href="#" class="btn btn-primary">Comprar Ahora</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recipes Section -->
+    <section class="recipes section" id="recetas">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <h2 class="section-title">Recetas Exclusivas</h2>
+                <p class="section-subtitle">HAZLO TÚ MISMO - Preparaciones magistrales con café Ramón Valdez</p>
+            </div>
+            <div class="recipes-grid">
+                <div class="recipe-card fade-in-up">
+                    <div class="recipe-image">
+                        ☕
+                    </div>
+                    <div class="recipe-content">
+                        <h3>Espresso Perfecto</h3>
+                        <ul class="recipe-ingredients">
+                            <li>2 cucharadas de café Ramón Valdez molido fino</li>
+                            <li>60ml de agua caliente (90°C)</li>
+                            <li>Presión de 9 bares</li>
+                            <li>Tiempo de extracción: 25-30 segundos</li>
+                            <li>Servir inmediatamente en taza precalentada</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Ver Receta Completa</a>
+                    </div>
+                </div>
+                <div class="recipe-card fade-in-up">
+                    <div class="recipe-image">
+                        🥛
+                    </div>
+                    <div class="recipe-content">
+                        <h3>Latte Arte Supremo</h3>
+                        <ul class="recipe-ingredients">
+                            <li>1 shot de espresso Ramón Valdez</li>
+                            <li>150ml de leche fresca entera</li>
+                            <li>Azúcar moscabado al gusto</li>
+                            <li>Técnica de vaporizado perfecta</li>
+                            <li>Arte latte profesional</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Ver Receta Completa</a>
+                    </div>
+                </div>
+                <div class="recipe-card fade-in-up">
+                    <div class="recipe-image">
+                        ❄️
+                    </div>
+                    <div class="recipe-content">
+                        <h3>Frappé Ramón Valdez</h3>
+                        <ul class="recipe-ingredients">
+                            <li>2 shots de espresso frío concentrado</li>
+                            <li>200ml de leche fría premium</li>
+                            <li>Hielo picado artesanalmente</li>
+                            <li>Crema batida casera</li>
+                            <li>Caramelo líquido de vainilla</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Ver Receta Completa</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact section" id="contacto">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <h2 class="section-title" style="color: white;">Contactános</h2>
+                <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">Estamos aquí para responder todas tus preguntas y compartir nuestra pasión por el café contigo.</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info slide-in-left">
+                    <h3>Información de Contacto</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Sede Principal:</strong><br>
+                            Calle 123 #45-67, Zona Rosa<br>
+                            Bogotá D.C., Colombia<br>
+                            <small>Edificio Ramón Valdez, Piso 5</small>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <strong>Líneas de Atención:</strong><br>
+                            +57 (1) 234-5678<br>
+                            WhatsApp: +57 300 123 4567
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>Correos Electrónicos:</strong><br>
+                            info@ramonvaldez.com.co<br>
+                            ventas@ramonvaldez.com.co
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>Horarios de Atención:</strong><br>
+                            Lunes a Viernes: 7:00 AM - 7:00 PM<br>
+                            Sábados y Domingos: 8:00 AM - 6:00 PM<br>
+                            <small>Servicio al cliente 24/7 por WhatsApp</small>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form slide-in-right" onsubmit="return handleFormSubmit(event)">
+                    <div class="form-group">
+                        <label for="nombre">Nombre Completo</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" placeholder="tu.email@ejemplo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono (Opcional)</label>
+                        <input type="tel" id="telefono" name="telefono" placeholder="+57 300 123 4567">
+                    </div>
+                    <div class="form-group">
+                        <label for="mensaje">Tu Mensaje</label>
+                        <textarea id="mensaje" name="mensaje" rows="5" placeholder="Cuéntanos cómo podemos ayudarte con el mejor café colombiano..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                        Enviar Mensaje
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="#" aria-label="Facebook" onclick="triggerConfetti()"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram" onclick="triggerConfetti()"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Twitter" onclick="triggerConfetti()"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="YouTube" onclick="triggerConfetti()"><i class="fab fa-youtube"></i></a>
+                <a href="#" aria-label="LinkedIn" onclick="triggerConfetti()"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <div class="footer-text">
+                <p>&copy; 2024 Ramón Valdez - El Café de Todo un País. Todos los derechos reservados.</p>
+                <p>Hecho con ❤️ y mucho ☕ en Colombia</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Page Loader
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.getElementById('pageLoader').classList.add('hidden');
+                initializeAnimations();
+                createParticles();
+            }, 3000);
+        });
+
+        // Scroll Progress
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / scrollHeight) * 100;
+            document.getElementById('scrollProgress').style.width = progress + '%';
+            
+            // Header scroll effect
+            const header = document.getElementById('header');
+            if (scrollTop > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobile-toggle').addEventListener('click', function() {
+            const navMenu = document.getElementById('nav-menu');
+            const icon = this.querySelector('i');
+            navMenu.classList.toggle('active');
+            
+            if (navMenu.classList.contains('active')) {
+                icon.classList.replace('fa-bars', 'fa-times');
+            } else {
+                icon.classList.replace('fa-times', 'fa-bars');
+            }
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('nav-menu').classList.remove('active');
+                    document.querySelector('#mobile-toggle i').classList.replace('fa-times', 'fa-bars');
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        function initializeAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-up, .slide-in-left, .slide-in-right').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Confetti Effect
+        function triggerConfetti() {
+            const container = document.getElementById('confettiContainer');
+            container.classList.add('active');
+            
+            const colors = ['#D4AF37', '#F4E68C', '#8B4513', '#5D2F0A', '#FFF'];
+            
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    createConfetti(container, colors);
+                }, i * 20);
+            }
+            
+            setTimeout(() => {
+                container.classList.remove('active');
+                container.innerHTML = '';
+            }, 4000);
+        }
+
+        function createConfetti(container, colors) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDelay = Math.random() * 2 + 's';
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            
+            const shapes = ['●', '■', '▲', '♦', '★'];
+            confetti.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+            
+            container.appendChild(confetti);
+            
+            setTimeout(() => {
+                if (confetti.parentNode) {
+                    confetti.parentNode.removeChild(confetti);
+                }
+            }, 4000);
+        }
+
+        // Particles Background
+        function createParticles() {
+            const particlesBg = document.getElementById('particlesBg');
+            
+            function addParticle() {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                
+                particlesBg.appendChild(particle);
+                
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 20000);
+            }
+            
+            // Create particles continuously
+            setInterval(addParticle, 1000);
+        }
+
+        // Form submission with confetti
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            // Trigger confetti
+            triggerConfetti();
+            
+            // Show success message
+            setTimeout(() => {
+                alert('¡Gracias por tu mensaje! Nos pondremos en contacto contigo pronto. ☕');
+                event.target.reset();
+            }, 1000);
+            
+            return false;
+        }
+
+        // Add hover effects to product cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const productCards = document.querySelectorAll('.product-card');
+            
+            productCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-15px) rotateX(5deg) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) rotateX(0deg) scale(1)';
+                });
+            });
+        });
+
+        // Parallax effect for hero background
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const heroBackground = document.querySelector('.hero-bg');
+            const floatingElements = document.querySelectorAll('.floating-coffee');
+            
+            if (heroBackground) {
+                heroBackground.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+            
+            floatingElements.forEach((element, index) => {
+                const speed = 0.2 + (index * 0.1);
+                element.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Advanced hover effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Magnetic effect for buttons
+            const buttons = document.querySelectorAll('.btn');
+            
+            buttons.forEach(button => {
+                button.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    this.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px) translateY(-5px)`;
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translate(0, 0) translateY(0)';
+                });
+            });
+
+            // Tilt effect for cards
+            const cards = document.querySelectorAll('.recipe-card, .product-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    const mouseX = e.clientX - centerX;
+                    const mouseY = e.clientY - centerY;
+                    
+                    const rotateX = (mouseY / rect.height) * 10;
+                    const rotateY = (mouseX / rect.width) * 10;
+                    
+                    this.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+                });
+            });
+
+            // Glitch effect for logo on click
+            const logo = document.querySelector('.logo');
+            logo.addEventListener('click', function() {
+                this.style.animation = 'none';
+                setTimeout(() => {
+                    this.style.animation = 'logoGlitch 0.3s ease';
+                }, 10);
+                
+                setTimeout(() => {
+                    this.style.animation = 'logoGlow 2s ease-in-out infinite alternate';
+                }, 300);
+                
+                triggerConfetti();
+            });
+        });
+
+        // Text typing effect
+        function typeWriter(element, text, speed = 50) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Sound effects (visual feedback)
+        function playVisualSound(type) {
+            const body = document.body;
+            
+            switch(type) {
+                case 'click':
+                    body.style.filter = 'brightness(1.1)';
+                    setTimeout(() => {
+                        body.style.filter = 'brightness(1)';
+                    }, 100);
+                    break;
+                case 'hover':
+                    // Subtle pulse effect
+                    break;
+            }
+        }
+
+        // Enhanced scroll animations
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset;
+            
+            // Parallax for different sections
+            document.querySelectorAll('.section').forEach((section, index) => {
+                const speed = 0.1 * (index + 1);
+                const yPos = -(scrollTop * speed);
+                section.style.backgroundPosition = `50% ${yPos}px`;
+            });
+            
+            // Scale hero content based on scroll
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent) {
+                const scale = Math.max(0.8, 1 - scrollTop / 1000);
+                const opacity = Math.max(0.3, 1 - scrollTop / 500);
+                heroContent.style.transform = `scale(${scale})`;
+                heroContent.style.opacity = opacity;
+            }
+        });
+
+        // Dynamic particle colors based on time
+        function updateParticleColors() {
+            const hour = new Date().getHours();
+            let color = '#D4AF37'; // Default gold
+            
+            if (hour >= 6 && hour < 12) {
+                color = '#F4E68C'; // Morning - light gold
+            } else if (hour >= 12 && hour < 18) {
+                color = '#D4AF37'; // Afternoon - gold
+            } else {
+                color = '#8B4513'; // Evening/Night - brown
+            }
+            
+            document.documentElement.style.setProperty('--particle-color', color);
+        }
+
+        // Initialize dynamic effects
+        setInterval(updateParticleColors, 60000); // Update every minute
+        updateParticleColors(); // Initial call
+
+        // Easter egg - Konami code
+        let konamiCode = [];
+        const konamiSequence = [
+            'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+            'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+            'KeyB', 'KeyA'
+        ];
+
+        document.addEventListener('keydown', function(e) {
+            konamiCode.push(e.code);
+            konamiCode = konamiCode.slice(-10); // Keep only last 10 keys
+            
+            if (konamiCode.join('') === konamiSequence.join('')) {
+                // Easter egg activated!
+                document.body.style.animation = 'rainbow 2s linear infinite';
+                triggerConfetti();
+                
+                setTimeout(() => {
+                    alert('¡Has descubierto el secreto del café perfecto! ☕✨');
+                    document.body.style.animation = 'none';
+                }, 3000);
+            }
+        });
+
+        // Performance optimization
+        let ticking = false;
+        
+        function updateOnScroll() {
+            // Batch DOM updates
+            requestAnimationFrame(() => {
+                // All scroll-based animations here
+                ticking = false;
+            });
+        }
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                updateOnScroll();
+                ticking = true;
+            }
+        });
+
+        // Add CSS animations for Easter egg
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes logoGlitch {
+                0% { transform: translateX(0); }
+                20% { transform: translateX(-2px); }
+                40% { transform: translateX(2px); }
+                60% { transform: translateX(-1px); }
+                80% { transform: translateX(1px); }
+                100% { transform: translateX(0); }
+            }
+            
+            @keyframes rainbow {
+                0% { filter: hue-rotate(0deg); }
+                100% { filter: hue-rotate(360deg); }
+            }
+            
+            .btn:active {
+                transform: scale(0.98);
+                transition: transform 0.1s ease;
+            }
+            
+            .nav-menu a:active {
+                transform: scale(0.95);
+            }
+            
+            /* Premium loading animations */
+            .section-title {
+                background: linear-gradient(45deg, var(--primary), var(--gold), var(--primary));
+                background-size: 300% 300%;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                animation: titleShine 4s ease-in-out infinite;
+            }
+            
+            @keyframes titleShine {
+                0%, 100% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+            }
+            
+            /* Breathing animation for important elements */
+            .hero .subtitle {
+                animation: breathe 4s ease-in-out infinite;
+            }
+            
+            @keyframes breathe {
+                0%, 100% { transform: scale(1); opacity: 1; }
+                50% { transform: scale(1.05); opacity: 0.8; }
+            }
+            
+            /* Floating animation for recipe ingredients */
+            .recipe-ingredients li:hover::before {
+                animation: ingredientSpin 0.5s ease;
+            }
+            
+            @keyframes ingredientSpin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+            /* Professional loading states */
+            .btn:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                transform: none !important;
+            }
+            
+            .btn:disabled::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 20px;
+                height: 20px;
+                margin: -10px;
+                border: 2px solid transparent;
+                border-top: 2px solid currentColor;
+                border-radius: 50%;
+                animation: buttonSpin 1s linear infinite;
+            }
+            
+            @keyframes buttonSpin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+            /* Smooth transitions for all interactive elements */
+            * {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            /* High-end hover states */
+            .social-links a:hover {
+                box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4);
+            }
+            
+            .contact-item:hover i {
+                transform: scale(1.2) rotate(5deg);
+            }
+            
+            /* Professional form states */
+            .form-group input:valid,
+            .form-group textarea:valid {
+                border-color: var(--gold);
+                box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+            }
+            
+            .form-group input:invalid,
+            .form-group textarea:invalid {
+                border-color: #dc3545;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
